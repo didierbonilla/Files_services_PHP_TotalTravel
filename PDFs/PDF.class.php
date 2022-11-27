@@ -5,18 +5,22 @@ require('../fpdf/fpdf.php');
 class PDF extends FPDF
 {
     var $tablewidths;
+    var $table_headers = array();
     var $footerset;
     var $user_name;
+    var $report_tittle;
 
     public function header(){
         //$this->Image('../img/logo.jpg',165,5,50,25,'jpg');
         $this->Image('../img/logo.jpg',3,5,50,25,'jpg');
         $this->SetFont('Arial','B',17);
-        $this->Cell(195,10,utf8_decode('AGENCIA TOTAL TRAVEL'),0,0,'C');
-        $this->Ln(7);
+        $this->SetX(70);
+        $this->Cell(80,10,utf8_decode('AGENCIA TOTAL TRAVEL'),0,0,'C');
+        $this->Ln(10);
+        $this->SetX(74);
         $this->SetFont('Arial','',12);
-        $this->Cell(195,10,utf8_decode('REPORTE DE HOTELES'),0,0,'C');
-        $this->Ln(20);
+        $this->MultiCell(70,6,utf8_decode($this->report_tittle),0,'C');
+        $this->Ln(15);
 
     }
 
@@ -38,7 +42,7 @@ class PDF extends FPDF
         }
     }
 
-    function morepagestable($headers, $datas, $lineheight = 13, $breakPage = 50)
+    function morepagestable($datas, $lineheight = 13, $breakPage = 50)
     {
         // Algunas cosas para establecer y ' recuerdan '
         $l = $this->lMargin;
@@ -51,13 +55,15 @@ class PDF extends FPDF
             $fullwidth += $width;
         }
 
-        $this->SetFont('Arial', 'B', 10);
         // GET HEADERS
-        for ($i=0; $i < count($headers); $i++) { 
-            $this->Cell($this->tablewidths[$i], $lineheight + 3, utf8_decode($headers[$i]), 1, 0, 'C');
+        if(count($this->table_headers) > 0){
+            $this->SetFont('Arial', 'B', 10);
+            for ($i=0; $i < count($this->table_headers); $i++) { 
+                $this->Cell($this->tablewidths[$i], $lineheight + 3, utf8_decode($this->table_headers[$i]), 1, 0, 'C');
+            }
+            $this->SetFont('Arial', '', 9);
+            $h += ($lineheight + 3);
         }
-        $this->SetFont('Arial', '', 9);
-        $h += ($lineheight + 3);
 
         // Ahora vamos a empezar a escribir la tabla
         foreach ($datas as $row => $data) {
@@ -71,14 +77,16 @@ class PDF extends FPDF
                 $h = $this->GetY();
                 $currpage = $this->page;
                 $this->Line($l, $h, $fullwidth + $l, $h);
-                $this->SetFont('Arial', 'B', 10);
                 
                 // GET HEADERS
-                for ($i=0; $i < count($headers); $i++) { 
-                    $this->Cell($this->tablewidths[$i], $lineheight + 3, utf8_decode($headers[$i]), 1, 0, 'C');
+                if(count($this->table_headers) > 0){
+                    $this->SetFont('Arial', 'B', 10);
+                    for ($i=0; $i < count($this->table_headers); $i++) { 
+                        $this->Cell($this->tablewidths[$i], $lineheight + 3, utf8_decode($this->table_headers[$i]), 1, 0, 'C');
+                    }
+                    $this->SetFont('Arial', '', 9);
+                    $h += ($lineheight + 3);
                 }
-                $this->SetFont('Arial', '', 9);
-                $h += ($lineheight + 3);
             }
  
             // Escribir el contenido y recordar la altura de la más alta columna

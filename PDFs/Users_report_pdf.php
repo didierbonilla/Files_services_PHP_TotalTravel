@@ -78,6 +78,7 @@ if(isset($_GET["query"])){
 //-------------------------------------------- PDF DOCUMENT START HERE ------------------------------------
 $pdf = new PDF();
 $pdf->user_name = $user_name;
+$pdf->report_tittle = "REPORTE DE USUARIOS DE EL SISTEMA";
 
 $pdf->AddPage('Portrait', 'Legal');
 $pdf->AliasNbPages();

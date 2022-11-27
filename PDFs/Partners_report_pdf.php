@@ -1,5 +1,5 @@
 <?php
-
+//query={"parameters":{"id":2,"edad":"18-20"},"user_name":"user_name_example"}
 require('PDF.class.php');
 require('../API.class.php');
 require('../Functions.class.php');
@@ -14,8 +14,8 @@ $token = $login_response["data"]["token"];
 $_API->_API_TOKEN = $token;
 
 // SAVE REPORT DATA 
-$hotelsList = json_decode($_API->HTTPRequest("/API/Hotels/List", "GET", null),true);
-$data = $hotelsList["data"];
+$partnersList = json_decode($_API->HTTPRequest("/API/Partners/List", "GET", null),true);
+$data = $partnersList["data"];
 
 // GET DEFAULT DATA
 $dataFilter =  $data;
@@ -44,24 +44,25 @@ if(isset($_GET["query"])){
 
 $pdf = new PDF();
 $pdf->user_name = $user_name;
-$pdf->report_tittle = "REPORTE DE HOTELES";
+$pdf->report_tittle = "REPORTE DE SOCIOS";
 
 $pdf->AddPage('Portrait', 'Legal');
 $pdf->AliasNbPages();
 
 // HEADER DE LA TABLA
-$header = array(
+$pdf->table_headers = array(
     'No.',
     'COD.',
-    'Hotel',
-    'Socio',
-    "Dirección",
+    'Nombre',
+    'E-mail',
+    "Telefono",
+    "Rubro"
 );
 
 if(count($dataFilter) > 0){
     $pdf->SetFont('Arial', '', 9);
     // ESTABLECE EL TAMAÑO DE CADA CELDA
-    $pdf->tablewidths = array(10,25,40,45,70);
+    $pdf->tablewidths = array(10,25,40,50,30,40);
 
     $item = 0;
 
@@ -69,23 +70,25 @@ if(count($dataFilter) > 0){
         $item = $item+1;
         $key = $dataFilter[$i];
 
-        $id_hotel = $key["id"];
-        $hotel = $key["hotel"];;
-        $partners = $key["partners"];
-        $ciudad = "Ciudad {$key["ciudad"]}, Colonia {$key["colonia"]}, Ave. {$key["avenida"]}, Calle {$key["calle"]}";
+        $id_partner = $key["id"];
+        $partner_name = $key["nombre"];;
+        $E_mail = $key["email"];
+        $telefono = $key["telefono"];
+        $partner_type = $key["tipoPartner"];
 
         // este array se rellena en orden de las columnas
         //ejemplo $item es el valor de la columna #1 y asi
         $row[] = array(
             utf8_decode($item."."),
-            utf8_decode("COD-00".$id_hotel),
-            utf8_decode($hotel),
-            utf8_decode($partners),
-            utf8_decode($ciudad)
+            utf8_decode("COD-00".$id_partner),
+            utf8_decode($partner_name),
+            utf8_decode($E_mail),
+            utf8_decode($telefono),
+            utf8_decode($partner_type),
         );
     }
 
-    $pdf->morepagestable($header,$row,5);
+    $pdf->morepagestable($row,5);
 }else{
     $pdf->SetFont('Arial', '', 12);
     $pdf->SetTextColor(254,38,25);
