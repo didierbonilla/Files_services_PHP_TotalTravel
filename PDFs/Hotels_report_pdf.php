@@ -50,7 +50,7 @@ $pdf->AddPage('Portrait', 'Legal');
 $pdf->AliasNbPages();
 
 // HEADER DE LA TABLA
-$header = array(
+$pdf->table_headers = array(
     'No.',
     'COD.',
     'Hotel',
@@ -85,7 +85,7 @@ if(count($dataFilter) > 0){
         );
     }
 
-    $pdf->morepagestable($header,$row,5);
+    $pdf->morepagestable($row,5);
 }else{
     $pdf->SetFont('Arial', '', 12);
     $pdf->SetTextColor(254,38,25);

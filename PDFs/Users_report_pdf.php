@@ -84,7 +84,7 @@ $pdf->AddPage('Portrait', 'Legal');
 $pdf->AliasNbPages();
 
 // HEADER DE LA TABLA
-$header = array(
+$pdf->table_headers = array(
     'No.',
     'DNI',
     'Nombre completo',
@@ -126,7 +126,7 @@ if(count($dataFilter) > 0){
         );
     }
 
-    $pdf->morepagestable($header,$row,6);
+    $pdf->morepagestable($row,6);
 }else{
     $pdf->SetFont('Arial', '', 12);
     $pdf->SetTextColor(254,38,25);
@@ -134,7 +134,7 @@ if(count($dataFilter) > 0){
     $row[] = array(
         utf8_decode("NO SE ENCONTRARON DATOS COINCIDENTES CON LA BUSQUEDA")
     );
-    $pdf->morepagestable($header,$row,13);
+    $pdf->morepagestable($row,13);
 }
 
 $pdf->Output();
