@@ -15,54 +15,70 @@
     <br>
     <div class="ui container">
 
+        <div class="ui secondary pointing menu" id="mnReportes">
+            <a class="active item" data-target="#frmHotelsReports" data-report="getReport_hotels">Hoteles</a>
+            <a class="item" data-target="#frmUsuarios" data-report="getReport_users">Usuarios</a>
+        </div>
         <div class="ui bottom attached segment">
 
-            <div class="ui floating dropdown labeled search icon button" id="cbbCities">
-                <i class="filter icon"></i>
-                <span class="text">Filtrar por ciudad</span>
-                <div class="menu">
-                    <div class="header">
-                        <i class="tags icon"></i> Filter by tag
+            <div id="frmHotelsReports">
+
+                <div class="ui floating dropdown labeled search icon button" id="cbbCities">
+                    <i class="filter icon"></i>
+                    <span class="text">Filtrar por ciudad</span>
+                    <div class="menu">
+                        <div class="header">
+                            <i class="tags icon"></i> Filter by tag
+                        </div>
+                        <div class="item" data-value="1">Choloma, Honduras</div>
+                        <div class="item" data-value="2">San pedro Sula, Honduras</div>
+                        <div class="item" data-value="3">Tegucigalpa, Honduras</div>
                     </div>
-                    <div class="item" data-value="1">Choloma, Honduras</div>
-                    <div class="item" data-value="2">San pedro Sula, Honduras</div>
-                    <div class="item" data-value="3">Tegucigalpa, Honduras</div>
                 </div>
+    
+                <div class="ui floating dropdown labeled search icon button" id="cbbHotels">
+                    <i class="filter icon"></i>
+                    <span class="text">Filtrar por hotel</span>
+                    <div class="menu">
+                        <div class="header">
+                            <i class="tags icon"></i> Filter by tag
+                        </div>
+                        <div class="item">Arabic</div>
+                        <div class="item">Chinese</div>
+                        <div class="item">Danish</div>
+                        <div class="item">Dutch</div>
+                        <div class="item">English</div>
+                    </div>
+                </div>
+    
+                <div class="ui floating dropdown labeled search icon button" id="cbbPartners">
+                    <i class="filter icon"></i>
+                    <span class="text">Filtrar por partner</span>
+                    <div class="menu">
+                        <div class="header">
+                            <i class="tags icon"></i> Filter by tag
+                        </div>
+                        <div class="item">Arabic</div>
+                        <div class="item">Chinese</div>
+                        <div class="item">Danish</div>
+                        <div class="item">Dutch</div>
+                        <div class="item">English</div>
+                    </div>
+                </div>
+                <button class="ui positive button" onclick="REPORTS_FUNCTIONS.getReport_hotels(true)">FILTRAR REPORTE</button>
+                <button class="ui positive button" onclick="REPORTS_FUNCTIONS.getReport_hotels(false)">TRAER TODOS</button>
+    
+                <div class="ui segment">
+                    <iframe id="ifrReport" src="" frameborder="0" width="100%" height="500px"></iframe>
+                </div>
+
             </div>
 
-            <div class="ui floating dropdown labeled search icon button" id="cbbHotels">
-                <i class="filter icon"></i>
-                <span class="text">Filtrar por hotel</span>
-                <div class="menu">
-                    <div class="header">
-                        <i class="tags icon"></i> Filter by tag
-                    </div>
-                    <div class="item">Arabic</div>
-                    <div class="item">Chinese</div>
-                    <div class="item">Danish</div>
-                    <div class="item">Dutch</div>
-                    <div class="item">English</div>
-                </div>
-            </div>
+            <div id="frmUsuarios">
 
-            <div class="ui floating dropdown labeled search icon button" id="cbbPartners">
-                <i class="filter icon"></i>
-                <span class="text">Filtrar por partner</span>
-                <div class="menu">
-                    <div class="header">
-                        <i class="tags icon"></i> Filter by tag
-                    </div>
-                    <div class="item">Arabic</div>
-                    <div class="item">Chinese</div>
-                    <div class="item">Danish</div>
-                    <div class="item">Dutch</div>
-                    <div class="item">English</div>
+                <div class="ui segment">
+                    <iframe id="ifrReport" src="" frameborder="0" width="100%" height="500px"></iframe>
                 </div>
-            </div>
-            <button class="ui positive button" onclick="getReport()">GET REPORT</button>
-
-            <div class="ui segment">
-                <iframe id="ifrReport" src="PDFs/Hotels_report_pdf.php" frameborder="0" width="100%" height="500px"></iframe>
             </div>
         </div>
     </div>

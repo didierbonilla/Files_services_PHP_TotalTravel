@@ -35,6 +35,16 @@ class Functions{
 
         return $arrayFilter;
     }
+
+    function GetYearsBetweenTwoDates($_date_S, $_date_F = null){
+
+        $_date_F = $_date_F == null ? date("Y-m-d") : $_date_F;
+
+        $date_S = new DateTime($_date_S);
+        $date_F = new DateTime($_date_F);
+        $diferencia = $date_F->diff($date_S);
+        return $diferencia->format("%y");
+    }
 }
 
 ?>
