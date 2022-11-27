@@ -9,12 +9,12 @@ class Functions{
 
             if(count($arrayFilter) == 0){
 
-                for ($j = 0; $j < count($data); $j++){
-                
-                    $element = $data[$j];
-                    
-                    if($element[$key] == intval($value)){
-                        array_push($arrayFilter, $element);
+                foreach ($data as $element){
+
+                    if(isset($element[$key])){
+                        if($element[$key] == $value || $element[$key] == intval($value)){
+                            array_push($arrayFilter, $element);
+                        }
                     }
                 }
             }
@@ -22,12 +22,13 @@ class Functions{
 
                 $temporalFilter = $arrayFilter;
                 $arrayFilter = array();
-                for ($j = 0; $j < count($temporalFilter); $j++){
-                
-                    $element = $temporalFilter[$j];
-                    
-                    if($element[$key] == intval($value)){
-                        array_push($arrayFilter, $element);
+            
+                foreach ($temporalFilter as $element){
+
+                    if(isset($element[$key])){
+                        if($element[$key] == $value || $element[$key] == intval($value)){
+                            array_push($arrayFilter, $element);
+                        }
                     }
                 }
             }

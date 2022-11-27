@@ -30,16 +30,49 @@ if(isset($_GET["query"])){
     $parameters = isset($query->parameters) ? $query->parameters : null;
     $user_name = isset($query->user_name) ? $query->user_name : "";
 
+    // FILTER DATA BY AGE
+    if(isset($parameters->edad)){
+
+        //echo "edad:<br>";
+        $temp_data = array();
+        foreach ($usersList as $element){
+            $fecha_nac = $element["fecha_Nacimiento"];
+            $edad = intval($_Functions->GetYearsBetweenTwoDates($fecha_nac));
+            $rango_edad = explode("-", strval($parameters->edad));
+
+            if(count($rango_edad) == 2){
+               // echo "rango de 2:<br>";
+                if($edad >= intval($rango_edad[0]) && $edad <= intval($rango_edad[1])){
+                    //echo "$edad<br>";
+                    array_push($temp_data, $element);
+                }
+            } 
+            else if(count($rango_edad) == 1){
+                //echo "rango de 1:<br>";
+                if($edad == intval($rango_edad[0])){
+                    //echo "$edad<br>";
+                    array_push($temp_data, $element);
+                }
+            }
+        }
+        //echo "total:".count($temp_data)."<br>";
+        $usersList = $temp_data;
+        unset($parameters->edad);
+    }
+
     // GET COUNTS OF PARAMETERS
     $parametersCount=0;
     if($parameters != null){
-        foreach ($parameters as $key => $value)
+        foreach ($parameters as $key=> $value)
             $parametersCount++;
     }
     
     // FILTER DATA
     if($parametersCount > 0)
-        $dataFilter = $_Functions->getDataFilter($data,$parameters); 
+        $dataFilter = $_Functions->getDataFilter($usersList,$parameters); 
+    else
+        $dataFilter = $usersList;
+    
 }
 
 //-------------------------------------------- PDF DOCUMENT START HERE ------------------------------------
