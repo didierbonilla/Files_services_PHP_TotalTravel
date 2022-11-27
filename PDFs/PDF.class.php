@@ -38,7 +38,7 @@ class PDF extends FPDF
         }
     }
 
-    function morepagestable($headers, $datas, $lineheight = 13)
+    function morepagestable($headers, $datas, $lineheight = 13, $breakPage = 50)
     {
         // Algunas cosas para establecer y ' recuerdan '
         $l = $this->lMargin;
@@ -66,7 +66,7 @@ class PDF extends FPDF
             // Escribir los bordes horizontales
             $this->Line($l, $h, $fullwidth + $l, $h);
 
-            if($this->GetY() > ($this->GetPageHeight() - 50)){
+            if($this->GetY() > ($this->GetPageHeight() - $breakPage)){
                 $this->AddPage('Portrait', 'Legal');
                 $h = $this->GetY();
                 $currpage = $this->page;
