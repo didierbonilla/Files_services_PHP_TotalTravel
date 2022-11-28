@@ -70,7 +70,7 @@ if(count($dataFilter) > 0){
         $key = $dataFilter[$i];
 
         $id_hotel = $key["id"];
-        $hotel = $key["hotel"];;
+        $hotel = $key["hotel"];
         $partners = $key["partners"];
         $ciudad = "Ciudad {$key["ciudad"]}, Colonia {$key["colonia"]}, Ave. {$key["avenida"]}, Calle {$key["calle"]}";
 

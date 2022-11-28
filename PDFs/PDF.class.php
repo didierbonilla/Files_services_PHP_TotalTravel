@@ -91,9 +91,18 @@ class PDF extends FPDF
  
             // Escribir el contenido y recordar la altura de la más alta columna
             foreach ($data as $col => $txt) {
+
+                $details = explode(";",$txt);
+
+                // GET STYLE LETTER
+                if( count($details) > 1 )
+                    $this->SetFont('Arial', $details[1], intval($details[2]));
+                else
+                    $this->SetFont('Arial','',9);
+
                 $this->page = $currpage;
                 $this->SetXY($l, $h);
-                $this->MultiCell($this->tablewidths[$col], $lineheight, $txt,0,"C");
+                $this->MultiCell($this->tablewidths[$col], $lineheight, $details[0],0,"C");
                 $l += $this->tablewidths[$col];
 
                 if (!isset($tmpheight[$row . '-' . $this->page]))

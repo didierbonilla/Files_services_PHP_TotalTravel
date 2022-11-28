@@ -1,5 +1,5 @@
 <?php
-//query={"parameters":{"id":2,"edad":"18-20"},"user_name":"user_name_example"}
+//?query={"user_name":"user_name_example"}
 require('PDF.class.php');
 require('../API.class.php');
 require('../Functions.class.php');
