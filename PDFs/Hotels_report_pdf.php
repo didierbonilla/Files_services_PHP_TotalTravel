@@ -72,7 +72,7 @@ if(count($dataFilter) > 0){
         $id_hotel = $key["id"];
         $hotel = $key["hotel"];
         $partners = $key["partners"];
-        $ciudad = "Ciudad {$key["ciudad"]}, Colonia {$key["colonia"]}, Ave. {$key["avenida"]}, Calle {$key["calle"]}";
+        $ciudad = "Pais {$key["pais"]}, Ciudad {$key["ciudad"]}, Colonia {$key["colonia"]}, Ave. {$key["avenida"]}, Calle {$key["calle"]}";
 
         // este array se rellena en orden de las columnas
         //ejemplo $item es el valor de la columna #1 y asi
@@ -89,7 +89,7 @@ if(count($dataFilter) > 0){
 }else{
     $pdf->SetFont('Arial', '', 12);
     $pdf->SetTextColor(254,38,25);
-    $pdf->tablewidths = array(190);
+    $pdf->tablewidths = array(0);
     $row[] = array(
         utf8_decode("NO SE ENCONTRARON DATOS COINCIDENTES CON LA BUSQUEDA")
     );

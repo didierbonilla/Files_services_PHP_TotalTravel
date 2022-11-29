@@ -84,17 +84,18 @@ $pdf->AddPage('Portrait', 'Legal');
 $pdf->AliasNbPages();
 
 // HEADER DE LA TABLA
-$pdf->table_headers = array(
-    'No.',
-    'DNI',
-    'Nombre completo',
-    'Genero',
-    'E-mail',
-    'Rol de usuario',
-    "Dirección",
-);
 
 if(count($dataFilter) > 0){
+    $pdf->table_headers = array(
+        'No.',
+        'DNI',
+        'Nombre completo',
+        'Genero',
+        'E-mail',
+        'Rol de usuario',
+        "Dirección",
+    );
+
     $pdf->SetFont('Arial', '', 9);
     // ESTABLECE EL TAMAÑO DE CADA CELDA
     $pdf->tablewidths = array(8,27,33,20,40,28,40);
@@ -111,7 +112,7 @@ if(count($dataFilter) > 0){
         $Genero = $key["sexo"];
         $E_mail = $key["email"];
         $Rol = $key["rol"];
-        $direccion = "Ciudad {$key["ciudad"]}, Colonia {$key["colonia"]}, Ave. {$key["avenida"]}, Calle {$key["calle"]}";
+        $direccion = "Pais {$key["pais"]}, Ciudad {$key["ciudad"]}, Colonia {$key["colonia"]}, Ave. {$key["avenida"]}, Calle {$key["calle"]}";
 
         // este array se rellena en orden de las columnas
         //ejemplo $item es el valor de la columna #1 y asi
@@ -130,11 +131,7 @@ if(count($dataFilter) > 0){
 }else{
     $pdf->SetFont('Arial', '', 12);
     $pdf->SetTextColor(254,38,25);
-    $pdf->tablewidths = array(190);
-    $row[] = array(
-        utf8_decode("NO SE ENCONTRARON DATOS COINCIDENTES CON LA BUSQUEDA")
-    );
-    $pdf->morepagestable($row,13);
+    $pdf->Cell(0,0,"NO SE ENCONTRARON DATOS COINCIDENTES CON LA BUSQUEDA",1,0,"C");
 }
 
 $pdf->Output();

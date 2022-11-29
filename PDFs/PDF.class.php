@@ -12,7 +12,7 @@ class PDF extends FPDF
 
     public function header(){
         //$this->Image('../img/logo.jpg',165,5,50,25,'jpg');
-        $this->Image('../img/logo.jpg',3,5,50,25,'jpg');
+        $this->Image('../img/logo.jpg',9,5,50,25,'jpg');
         $this->SetFont('Arial','B',17);
         $this->SetX(70);
         $this->Cell(80,10,utf8_decode('AGENCIA TOTAL TRAVEL'),0,0,'C');
@@ -28,12 +28,15 @@ class PDF extends FPDF
 
         // Compruebe si pie de página de esta página ya existe ( lo mismo para Header ( ) )
         if(!isset($this->footerset[$this->page])) {
-            $this->SetY(-20);
+            $this->SetTextColor(0,0,0);
+            $this->SetFont('Arial', '', 9);
+            $this->SetXY(9,-20);
     
             // Numero de Pagina
             $this->Cell(97.5,10,utf8_decode("Usuario: ".$this->user_name),0,0,'L');
             $this->Cell(97.5,10,utf8_decode("Fecha de impresión: ".date("Y-m-d g:i a")),0,0,'R');
             $this->Ln(5);
+            $this->SetX(9);
             $this->Cell(0,10,utf8_decode('Página ').$this->PageNo().' de {nb}',0,0,'R');
             //$this->Cell(0,10,'GetPageHeight: '.$this->GetPageHeight().', GetY: '.$this->GetY(),0,0,'R');
     
@@ -42,9 +45,16 @@ class PDF extends FPDF
         }
     }
 
-    function morepagestable($datas, $lineheight = 13, $breakPage = 50)
+    function morepagestable($datas, $lineheight = 13, $breakPage = 50, $x = 0 ,$y = 0)
     {
         // Algunas cosas para establecer y ' recuerdan '
+        $startWidth =  $this->lMargin;
+
+        if($x != 0)
+            $this->lMargin = $x;
+        if($y != 0)
+            $this->SetY($y);   
+
         $l = $this->lMargin;
         $startheight = $h = $this->GetY();
         $startpage = $currpage = $maxpage = $this->page;
@@ -137,12 +147,13 @@ class PDF extends FPDF
     
             
         }
-
         // Dibujar las fronteras
         // Empezamos a añadir una línea horizontal en la última página
         $this->page = $maxpage;
         $this->Line($l, $h, $fullwidth + $l, $h);
         // Establecerlo en la última página , si no que va a causar algunos problemas
         $this->page = $maxpage;
+
+        return array($l, $startheight, $fullwidth + $l, $h);
     }
 }
