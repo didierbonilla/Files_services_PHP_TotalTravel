@@ -32,7 +32,7 @@ if($dataFilter["reservacionDetalle"] != null){
     $pdf->AddPage('Portrait', 'Legal');
     $pdf->AliasNbPages();
 
-    // GENERAL INFO ------------------------------------------------------------------------
+// GENERAL INFO ------------------------------------------------------------------------
 
     // HEADER
     $pdf->SetFont('Arial', 'B', 12);
@@ -55,6 +55,7 @@ if($dataFilter["reservacionDetalle"] != null){
         utf8_decode($reservacionDetalle["telefono"])
     );
     $pdf->morepagestable($general_info_1,7);
+    $pdf->Ln(7);
 
     // ROW #2
     $pdf->tablewidths = array(20,35,20,60,20,41);
@@ -74,7 +75,7 @@ if($dataFilter["reservacionDetalle"] != null){
     $pdf->Ln(10);
 
 
-    // HOTEL INFO TABLE --------------------------------------------------------------------
+// HOTEL INFO TABLE --------------------------------------------------------------------
     $HotelData = json_decode($_API->HTTPRequest("/API/Hotels/Find?Id=".$reservacionDetalle["hotel_ID"], "GET", null),true);
 
     // HEADER
@@ -115,24 +116,26 @@ if($dataFilter["reservacionDetalle"] != null){
     $pdf->Ln(15);
 
 
-    // HOTEL ROOMS INFO TABLE --------------------------------------------------------------------
+// HOTEL ROOMS INFO TABLE --------------------------------------------------------------------
+
+    // HEADER 
     $pdf->SetFont('Arial', 'B', 12);
     $pdf->SetFillColor(153, 0, 255);
     $pdf->SetTextColor(255, 255, 255);
     $pdf->Cell(0,8,"HABITACIONES RESERVADAS",1,0,"C",1);
     $pdf->Ln(8);
 
+    // BODY
     if(count($dataFilter["habitaciones"]) > 0){
 
         $pdf->SetTextColor(0,0,0);
-        $pdf->tablewidths = array(8,8,20,60,20,40,20,20);
+        $pdf->tablewidths = array(8,20,68,20,40,20,20);
         
         $count = 1;
         foreach ($dataFilter["habitaciones"] as $item) {
             
-            $hotel_room_info[] = array(
-                utf8_decode('No.;B;9'),  
-                utf8_decode($count),
+            $hotel_room_info[] = array( 
+                utf8_decode($count."."),
                 utf8_decode('Nombre;B;9'),
                 utf8_decode($item["details"]["habitacion"]),
                 utf8_decode('Precio;B;9'),
@@ -151,11 +154,102 @@ if($dataFilter["reservacionDetalle"] != null){
         $pdf->SetFont('Arial', '', 12);
         $pdf->SetTextColor(254,38,25);
         $pdf->Cell(0,8,"NO SE ENCONTRARON HABITACIONES RESERVADAS",1,0,"C",1);
+        $pdf->Ln(16);
     }
     
-    $pdf->SetTextColor(255, 255, 255);
+
+// HOTEL ROOMS INFO TABLE --------------------------------------------------------------------
+    
+    // HEADER 
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(0,8,"ACTIVIDADES RESERVADAS",1,0,"C",1);
+    $pdf->SetFillColor(153, 0, 255);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(0,8,"ACTIVIDADES PROGRAMADAS EN EL HOTEL",1,0,"C",1);
+    $pdf->Ln(8);
+
+    // BODY 
+    if(count($dataFilter["actividadesHoteles"]) > 0){
+
+        $pdf->table_headers = array(
+            "No.",
+            "Nombre",
+            "Precio",
+            "Reservado para",
+            "Programada para el dia"
+        );
+        $pdf->SetTextColor(0,0,0);
+        $pdf->tablewidths = array(8,61,40,30,57);
+        
+        $count = 1;
+        foreach ($dataFilter["actividadesHoteles"] as $item) {
+            
+            $hotel_activities_info[] = array( 
+                utf8_decode($count."."),
+                utf8_decode($item["details"]["actividad"]),
+                utf8_decode("L ".number_format($item["details"]["precio"],2)." /persona"),    
+                utf8_decode($item["reAH_Cantidad"]." personas"),  
+                utf8_decode($_Functions->date_Es($item["reAH_FechaReservacion"])),  
+            );
+            $count++;
+        }
+
+        $pdf->morepagestable($hotel_activities_info,7);
+        $pdf->table_headers = array();
+        $pdf->Ln(16);
+    }else{
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetTextColor(254,38,25);
+        $pdf->Cell(0,8,"NO SE ENCONTRARON ACTIVIDADES PROGRAMADAS EN EL HOTEL",1,0,"C",1);
+        $pdf->Ln(16);
+    }
+
+
+// EXTRA ACTIVITIES TABLE --------------------------------------------------------------------
+    
+    // HEADER 
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->SetFillColor(153, 0, 255);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(0,8,"ACTIVIDADES EXTRA PROGRAMADAS",1,0,"C",1);
+    $pdf->Ln(8);
+
+    // BODY 
+    if(count($dataFilter["actividadesExtras"]) > 0){
+
+        $pdf->table_headers = array(
+            "No.",
+            "Nombre",
+            "Precio",
+            "Reservado para",
+            "Programada para el dia"
+        );
+        $pdf->SetTextColor(0,0,0);
+        $pdf->tablewidths = array(8,61,40,30,57);
+        
+        $count = 1;
+        foreach ($dataFilter["actividadesExtras"] as $item) {
+            
+            $hotel_activities_info[] = array( 
+                utf8_decode($count."."),
+                utf8_decode($item["details"]["actividad"]),
+                utf8_decode("L ".number_format($item["details"]["precio"],2)." /persona"),    
+                utf8_decode($item["reAE_Cantidad"]." personas"),  
+                utf8_decode($_Functions->date_Es($item["reAE_FechaReservacion"])),  
+            );
+            $count++;
+        }
+
+        $pdf->morepagestable($hotel_activities_info,7);
+        $pdf->table_headers = array();
+        $pdf->Ln(16);
+    }else{
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetTextColor(254,38,25);
+        $pdf->Cell(0,8,"NO SE ENCONTRARON ACTIVIDADES EXTRAS PROGRAMADAS",1,0,"C",1);
+        $pdf->Ln(16);
+    }
 
 
 
