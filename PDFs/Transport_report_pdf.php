@@ -45,7 +45,7 @@ if(isset($_GET["query"])){
 // CREATE PDF DOCUMENT --------------------------------------------------------------------
 $pdf = new PDF();
 $pdf->user_name = $user_name;
-$pdf->report_tittle = "REPORTE DE HOTELES";
+$pdf->report_tittle = "REPORTE DE TRANSPORTES";
 
 $pdf->AddPage('Portrait', 'Legal');
 $pdf->AliasNbPages();
