@@ -90,7 +90,7 @@ if(count($dataFilter) > 0){
         'No.',
         'DNI',
         'Nombre completo',
-        'Genero',
+        'Sexo',
         'E-mail',
         'Rol de usuario',
         "Dirección",
