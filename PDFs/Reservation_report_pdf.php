@@ -100,17 +100,17 @@ if($dataFilter["reservacionDetalle"] != null){
     $pdf->morepagestable($hotel_info_1,6);
 
     // ROW #2
-    $pdf->tablewidths = array(30,106,30,30);
+    $pdf->tablewidths = array(30,166);
     $fecha_1 = $_Functions->date_Es($reservacionDetalle["fecha_Entrada"]);
     $fecha_2 = $_Functions->date_Es($reservacionDetalle["fecha_Salida"]);
 
     $hotel_info_2[] = array(
-        utf8_decode("FECHA;B;9"),
-        utf8_decode("Programado para el dia $fecha_1 hasta el dia $fecha_2"),
-        utf8_decode("PERSONAS;B;9"),
+        utf8_decode("DESCRIPCIÓN;B;9"),
         utf8_decode(
-            $reservacionDetalle["numeroPersonas"].( intval($reservacionDetalle["numeroPersonas"]) <= 1 ? " persona" : " personas")
-        )
+            "Programado para el dia $fecha_1 hasta el dia $fecha_2 para ".(
+                $reservacionDetalle["numeroPersonas"].( intval($reservacionDetalle["numeroPersonas"]) <= 1 ? " persona" : " personas")
+            )
+        ),
     );
     $pdf->morepagestable($hotel_info_2,6);
     $pdf->Ln(15);
@@ -136,11 +136,11 @@ if($dataFilter["reservacionDetalle"] != null){
             
             $hotel_room_info[] = array( 
                 utf8_decode($count."."),
-                utf8_decode('Nombre;B;9'),
+                utf8_decode('NOMBRE;B;9'),
                 utf8_decode($item["details"]["habitacion"]),
-                utf8_decode('Precio;B;9'),
+                utf8_decode('PRECIO;B;9'),
                 utf8_decode("L ".number_format($item["details"]["precio"],2)." /noche"),    
-                utf8_decode('Cantidad;B;9'),
+                utf8_decode('CANTIDAD;B;9'),
                 utf8_decode($item["habi_Cantidad"]),  
             );
             $count++;
@@ -158,7 +158,7 @@ if($dataFilter["reservacionDetalle"] != null){
     }
     
 
-// HOTEL ROOMS INFO TABLE --------------------------------------------------------------------
+// HOTEL ACTIVITIES TABLE --------------------------------------------------------------------
     
     // HEADER 
     $pdf->SetFont('Arial', 'B', 12);
@@ -171,14 +171,13 @@ if($dataFilter["reservacionDetalle"] != null){
     if(count($dataFilter["actividadesHoteles"]) > 0){
 
         $pdf->table_headers = array(
-            "No.",
-            "Nombre",
-            "Precio",
-            "Reservado para",
-            "Programada para el dia"
+            "NO.",
+            "NOMBRE",
+            "PRECIO",
+            "DESCRIPCIÓN"
         );
         $pdf->SetTextColor(0,0,0);
-        $pdf->tablewidths = array(8,61,40,30,57);
+        $pdf->tablewidths = array(10,61,40,85);
         
         $count = 1;
         foreach ($dataFilter["actividadesHoteles"] as $item) {
@@ -186,14 +185,13 @@ if($dataFilter["reservacionDetalle"] != null){
             $hotel_activities_info[] = array( 
                 utf8_decode($count."."),
                 utf8_decode($item["details"]["actividad"]),
-                utf8_decode("L ".number_format($item["details"]["precio"],2)." /persona"),    
-                utf8_decode($item["reAH_Cantidad"]." personas"),  
-                utf8_decode($_Functions->date_Es($item["reAH_FechaReservacion"])),  
+                utf8_decode("L ".number_format($item["details"]["precio"],2)." /persona"),   
+                utf8_decode("Programado para el dia ".$_Functions->date_Es($item["reAH_FechaReservacion"])." para ".$item["reAH_Cantidad"]." personas") 
             );
             $count++;
         }
 
-        $pdf->morepagestable($hotel_activities_info,7);
+        $pdf->morepagestable($hotel_activities_info,6);
         $pdf->table_headers = array();
         $pdf->Ln(16);
     }else{
@@ -218,29 +216,27 @@ if($dataFilter["reservacionDetalle"] != null){
     if(count($dataFilter["actividadesExtras"]) > 0){
 
         $pdf->table_headers = array(
-            "No.",
-            "Nombre",
-            "Precio",
-            "Reservado para",
-            "Programada para el dia"
+            "NO.",
+            "NOMBRE",
+            "PRECIO",
+            "DESCRIPCIÓN"
         );
         $pdf->SetTextColor(0,0,0);
-        $pdf->tablewidths = array(8,61,40,30,57);
+        $pdf->tablewidths = array(10,61,40,85);
         
         $count = 1;
         foreach ($dataFilter["actividadesExtras"] as $item) {
             
-            $hotel_activities_info[] = array( 
+            $extra_activities_info[] = array( 
                 utf8_decode($count."."),
                 utf8_decode($item["details"]["actividad"]),
                 utf8_decode("L ".number_format($item["details"]["precio"],2)." /persona"),    
-                utf8_decode($item["reAE_Cantidad"]." personas"),  
-                utf8_decode($_Functions->date_Es($item["reAE_FechaReservacion"])),  
+                utf8_decode("Programado para el dia ".$_Functions->date_Es($item["reAE_FechaReservacion"])." para ".$item["reAE_Cantidad"]." personas")
             );
             $count++;
         }
 
-        $pdf->morepagestable($hotel_activities_info,7);
+        $pdf->morepagestable($extra_activities_info,6);
         $pdf->table_headers = array();
         $pdf->Ln(16);
     }else{

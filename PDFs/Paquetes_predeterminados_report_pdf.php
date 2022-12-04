@@ -94,10 +94,10 @@ if(count($dataFilter) > 0){
             utf8_decode("COD-00". $id_paquete),
             utf8_decode($Nombre),
             utf8_decode($Descripcion_Paquete),
-            utf8_decode($Duracion_Paquete)
+            utf8_decode($Duracion_Paquete),
             utf8_decode($precio),
             utf8_decode($Cantidad_de_personas),
-            utf8_decode($Hotel)
+            utf8_decode($Hotel),
             utf8_decode($Ciudad),
             utf8_decode($Restaurante)
         );

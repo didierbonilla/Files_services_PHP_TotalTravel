@@ -92,10 +92,10 @@ if(count($dataFilter) > 0){
             utf8_decode("COD-00". $id_registropago),
             utf8_decode($Nombre_Completo),
             utf8_decode($DNI),
-            utf8_decode($Telefono)
+            utf8_decode($Telefono),
             utf8_decode($TipoPago),
             utf8_decode($MontoPago),
-            utf8_decode($fechaPago)
+            utf8_decode($fechaPago),
             utf8_decode($nombre_paquete),
             utf8_decode($precio_paquete)
         );
