@@ -45,7 +45,7 @@ if(isset($_GET["query"])){
 // CREATE PDF DOCUMENT --------------------------------------------------------------------
 $pdf = new PDF();
 $pdf->user_name = $user_name;
-$pdf->report_tittle = "REPORTE DE TIPOS DE PAGOS ";
+$pdf->report_tittle = "REPORTE DE REGISTROS DE PAGOS";
 
 $pdf->AddPage('Portrait', 'Legal');
 $pdf->AliasNbPages();
@@ -53,21 +53,19 @@ $pdf->AliasNbPages();
 // HEADER DE LA TABLA
 $pdf->table_headers = array( // CAMBIO #2
     'No.',
-    'COD.',
     'Nombre cliente',
     'DNI',
-    "Telefono",
+    'Telefono',
     'Tipo pago',
     'Monto pago',
     'Fecha pago',
-    "Nombre paquete",
-    "Precio paquete",
+   
 );
 
 if(count($dataFilter) > 0){
     $pdf->SetFont('Arial', '', 9);
     // ESTABLECE EL TAMAÑO DE CADA CELDA
-    $pdf->tablewidths = array(10,25,45,40,35,30,35,30,50,30); // TAMAÑOS EN MM DE CADA COLUMNA  // CAMBIO #3
+    $pdf->tablewidths = array(8,35,28,25,28,28,35);
 
     $item = 0;
 
@@ -76,28 +74,25 @@ if(count($dataFilter) > 0){
         $key = $dataFilter[$i];
 
         $id_registropago = $key["id"];
-        $Nombre_Completo = $key["Nombrecompleto"];
+        $Nombre_Completo = $key["nombre_Completo"];
         $DNI = $key["dni"];
         $Telefono = $key["telefono"];
-        $TipoPago = $key["tipopago"];
-        $MontoPago = $key["Montopago"];
-        $fechaPago = $key["fecha"];
-        $nombre_paquete = $key["paquete"];
-        $precio_paquete = $key["precio"];
+        $TipoPago = $key["tipoPago"];
+        $MontoPago = $key["montoPago"];
+        $fechaPago = $key["fechaPago"];
+       
 
         // este array se rellena en orden de las columnas
         //ejemplo $item es el valor de la columna #1 y asi  // CAMBIO #4
         $row[] = array(
             utf8_decode($item."."),
-            utf8_decode("COD-00". $id_registropago),
             utf8_decode($Nombre_Completo),
             utf8_decode($DNI),
             utf8_decode($Telefono),
             utf8_decode($TipoPago),
             utf8_decode($MontoPago),
-            utf8_decode($fechaPago),
-            utf8_decode($nombre_paquete),
-            utf8_decode($precio_paquete)
+            utf8_decode($fechaPago)
+          
         );
     }
 
@@ -113,3 +108,5 @@ if(count($dataFilter) > 0){
 }
 
 $pdf->Output();
+
+
