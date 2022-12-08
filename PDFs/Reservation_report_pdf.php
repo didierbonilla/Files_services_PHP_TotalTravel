@@ -31,6 +31,7 @@ if($dataFilter["reservacionDetalle"] != null){
 
     $pdf->AddPage('Portrait', 'Legal');
     $pdf->AliasNbPages();
+    //$pdf->AutoPageBreak();
 
 // GENERAL INFO ------------------------------------------------------------------------
 
@@ -247,7 +248,99 @@ if($dataFilter["reservacionDetalle"] != null){
         $pdf->Ln(16);
     }
 
+// ------------------------------ NEW PAGE --------------------------------------------------------------------
 
+    $pdf->AddPage('Portrait', 'Legal');
+// RESTAURANT TABLE TABLE --------------------------------------------------------------------
+
+    // HEADER 
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->SetFillColor(153, 0, 255);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(0,8,"RESERVACIONES DE RESTAURANTES",1,0,"C",1);
+    $pdf->Ln(8);
+
+    // BODY 
+    if(count($dataFilter["restaurantes"]) > 0){
+
+        $pdf->table_headers = array(
+            "NO.",
+            "NOMBRE",
+            "DIRECCIÓN",
+            "DESCRIPCIÓN"
+        );
+        $pdf->SetTextColor(0,0,0);
+        $pdf->tablewidths = array(10,36,70,80);
+        
+        $count = 1;
+        foreach ($dataFilter["restaurantes"] as $item) {
+
+            $direccion = "Ciudad {$item["details"]["ciudad"]}, Colonia {$item["details"]["colonia"]}, Calle {$item["details"]["calle"]}, Avenida {$item["details"]["avenida"]}";
+            $restaurant_info[] = array( 
+                utf8_decode($count."."), 
+                utf8_decode($item["details"]["restaurante"]),   
+                utf8_decode($direccion), 
+                utf8_decode("Programado para el día ".$_Functions->date_Es($item["reRe_FechaReservacion"]))
+            );
+            $count++;
+        }
+
+        $pdf->morepagestable($restaurant_info,6);
+        $pdf->table_headers = array();
+        $pdf->Ln(16);
+    }else{
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetTextColor(254,38,25);
+        $pdf->Cell(0,8,"NO SE ENCONTRARON RESTAURANTES PROGRAMADOS",1,0,"C",1);
+        $pdf->Ln(16);
+    }
+
+// TRANSPORT TABLE TABLE --------------------------------------------------------------------
+
+    // HEADER 
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->SetFillColor(153, 0, 255);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(0,8,"RESERVACIONES DE TRANSPORTES",1,0,"C",1);
+    $pdf->Ln(8);
+
+    // BODY 
+    if(count($dataFilter["transportes"]) > 0){
+
+        $pdf->table_headers = array(
+            "NO.",
+            "AGENCIA",
+            "DESCRIPCIÓN",
+            "ASIENTOS",
+            "PRECIO"
+        );
+        $pdf->SetTextColor(0,0,0);
+        $pdf->tablewidths = array(10,41,70,35,40);
+        
+        $count = 1;
+        foreach ($dataFilter["transportes"] as $item) {
+
+            $transport_info[] = array( 
+                utf8_decode($count."."), 
+                utf8_decode($item["details"]["parter"]),   
+                utf8_decode("Programado para el día ".$_Functions->date_Es($item["details"]["fecha_Salida"])." a las ".$item["details"]["hora_Salida"]),
+                utf8_decode($item["reTr_CantidadAsientos"]),  
+                utf8_decode("L ".number_format($item["details"]["precio"],2)." /asiento")
+            );
+            $count++;
+        }
+
+        $pdf->morepagestable($transport_info,6);
+        $pdf->table_headers = array();
+        $pdf->Ln(16);
+    }else{
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetTextColor(254,38,25);
+        $pdf->Cell(0,8,"NO SE ENCONTRARON TRANSPORTES PROGRAMADOS",1,0,"C",1);
+        $pdf->Ln(16);
+    }
 
     $pdf->Output();
 
