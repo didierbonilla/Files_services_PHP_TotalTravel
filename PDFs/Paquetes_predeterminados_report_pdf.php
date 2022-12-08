@@ -53,9 +53,7 @@ $pdf->AliasNbPages();
 // HEADER DE LA TABLA
 $pdf->table_headers = array( // CAMBIO #2
     'No.',
-    'COD.',
     "Nombre paquete",
-    'Descripcion paquete',
     'Duracion paquete',
     "Precio paquete",
     'Cantidad personas',
@@ -68,7 +66,7 @@ $pdf->table_headers = array( // CAMBIO #2
 if(count($dataFilter) > 0){
     $pdf->SetFont('Arial', '', 9);
     // ESTABLECE EL TAMAÑO DE CADA CELDA
-    $pdf->tablewidths = array(10,25,50,80,35,30,30,40,40,40); // TAMAÑOS EN MM DE CADA COLUMNA  // CAMBIO #3
+    $pdf->tablewidths = array(8,30,30,30,33,23,18,20);
 
     $item = 0;
 
@@ -77,11 +75,10 @@ if(count($dataFilter) > 0){
         $key = $dataFilter[$i];
 
         $id_paquete = $key["id"];
-        $Nombre = $key["nombrepaquete"];
-        $Descripcion_Paquete = $key["descripcionpaquete"];
-        $Duracion_Paquete = $key["duracionpaquete"];
-        $precio = $key["preciopaquete"];
-        $Cantidad_de_personas = $key["personas"];
+        $Nombre = $key["nombre"];
+        $Duracion_Paquete = $key["duracion_Paquete"];
+        $precio = $key["precio"];
+        $Cantidad_de_personas = $key["cantidad_de_personas"];
         $Hotel = $key["hotel"];
         $Ciudad = $key["ciudad"];
         $Restaurante = $key["restaurante"];
@@ -91,10 +88,8 @@ if(count($dataFilter) > 0){
         //ejemplo $item es el valor de la columna #1 y asi  // CAMBIO #4
         $row[] = array(
             utf8_decode($item."."),
-            utf8_decode("COD-00". $id_paquete),
             utf8_decode($Nombre),
-            utf8_decode($Descripcion_Paquete),
-            utf8_decode($Duracion_Paquete),
+            utf8_decode($Duracion_Paquete."Dias"),
             utf8_decode($precio),
             utf8_decode($Cantidad_de_personas),
             utf8_decode($Hotel),
